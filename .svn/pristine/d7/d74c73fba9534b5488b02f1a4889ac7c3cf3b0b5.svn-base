@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.5">
+  <compounddef id="dir_b04f89f5a7f8ec29a0b9160f0e142536" kind="dir">
+    <compoundname>linphone</compoundname>
+    <innerdir refid="dir_49f6a0ce881994c88d2ca2722aa9a749">coreapi</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/"/>
+  </compounddef>
+</doxygen>

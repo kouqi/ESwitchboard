@@ -1,0 +1,203 @@
+//
+//  kqDeleteCallRecorderViewController.m
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/7/28.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import "kqDeleteCallRecorderViewController.h"
+#import "kqDeleteCallRecorderTableViewCell.h"
+@interface kqDeleteCallRecorderViewController ()<UITableViewDataSource,UITableViewDelegate,kqDownloadManagerDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *selectButton;
+@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (strong, nonatomic) UITableView *tableView;
+@end
+
+@implementation kqDeleteCallRecorderViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"已选择0条记录";
+    [self initTopBar];
+    UIScreen *ms = [UIScreen mainScreen];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 154, ms.bounds.size.width, ms.bounds.size.height - 154)];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:self.tableView];
+    kqPersonalInfomation *pinfo = [kqPersonalInfomation sharedPersonalInfomation];
+    NSMutableArray *arr = [NSMutableArray arrayWithArray:[NSMutableArray arrayWithArray:pinfo.callRecoderArray]];
+    self.dataArray = [NSMutableArray array];
+    for (NSMutableDictionary *mdic in arr) {
+        [mdic setValue:[NSNumber numberWithBool:NO] forKey:@"flag"];
+        [self.dataArray addObject:mdic];
+    }
+    [self.tableView reloadData];
+    // Do any additional setup after loading the view from its nib.
+}
+
+- (IBAction)tapSelectButton:(UIButton *)sender {
+    if ([sender.titleLabel.text isEqualToString:@"全选"]) {
+        self.title = [NSString stringWithFormat:@"已选%lu条记录",(unsigned long)self.dataArray.count];
+        for (NSMutableDictionary *mdic in self.dataArray) {
+            [mdic setValue:[NSNumber numberWithBool:YES] forKey:@"flag"];
+        }
+        [sender setTitle:@"已全选" forState:UIControlStateNormal];
+    }else{
+        self.title = [NSString stringWithFormat:@"已选0条记录"];
+        for (NSMutableDictionary *mdic in self.dataArray) {
+            [mdic setValue:[NSNumber numberWithBool:NO] forKey:@"flag"];
+        }
+        [sender setTitle:@"全选" forState:UIControlStateNormal];
+    }
+    [self.tableView reloadData];
+}
+
+- (IBAction)tapDeleteButton:(UIButton *)sender {
+    NSMutableArray *marr = [NSMutableArray array];
+    for (NSMutableDictionary *mdic in self.dataArray) {
+        if ([[mdic valueForKey:@"flag"] boolValue]) {
+            [marr addObject:mdic];
+        }
+    }
+    if (marr.count != 0) {
+//        if ([[kqDataBase sharedDataBase] deleteRecoderWithArray:marr]) {
+//            self.title = @"已选择0条记录";
+//            NSMutableArray *arr = [NSMutableArray arrayWithArray:[[kqDataBase sharedDataBase] queryAllRecoder]];
+//            self.dataArray = [NSMutableArray array];
+//            for (NSMutableDictionary *mdic in arr) {
+//                [mdic setValue:[NSNumber numberWithBool:NO] forKey:@"flag"];
+//                [self.dataArray addObject:mdic];
+//            }
+//            [self.tableView reloadData];
+//        }
+        [kqAllTools showOnWindow:@"删除中..."];
+        kqDownloadManager *dl = [kqDownloadManager sharedDownLoadManager];
+        dl.delegate = self;
+        [dl deleteCallRecorderWithIdlist:marr];
+    }
+}
+
+-(void)deleteCallRecorderDelegate:(NSDictionary *)rootDic
+{
+    if ([[[rootDic valueForKey:@"messageheader"] valueForKey:@"errcode"] intValue] == 0) {
+        kqDownloadManager *dl = [[kqDownloadManager alloc] init];
+        dl.delegate = self;
+        [dl gainCallRecorderListWithType:nil andDate:nil];
+    }else{
+        [kqAllTools showTipTextOnWindow:[[rootDic valueForKey:@"messageheader"] valueForKey:@"errmsg"]];
+    }
+}
+
+-(void)gainCallRecorderListDelegate:(NSDictionary *)rootDic
+{
+    [kqAllTools hidenHUD];
+    if ([[[rootDic valueForKey:@"messageheader"] valueForKey:@"errcode"] intValue] == 0) {
+        kqPersonalInfomation *pinfo = [kqPersonalInfomation sharedPersonalInfomation];
+        if (pinfo.callRecoderArray) {
+            [pinfo.callRecoderArray removeAllObjects];
+        }else{
+            pinfo.callRecoderArray = [NSMutableArray array];
+        }
+        NSArray *arr = [[rootDic valueForKey:@"data"] valueForKey:@"ebocalllist"];
+        if (arr.count > 0) {
+            for (NSDictionary *dic in arr) {
+                NSMutableDictionary *mdic = [NSMutableDictionary dictionaryWithDictionary:dic];
+                [pinfo.callRecoderArray addObject:mdic];
+            }
+        }
+        if (self.dataArray) {
+            [self.dataArray removeAllObjects];
+        }else{
+            self.dataArray = [NSMutableArray array];
+        }
+        for (NSMutableDictionary *mdic in pinfo.callRecoderArray) {
+            [mdic setValue:[NSNumber numberWithBool:NO] forKey:@"flag"];
+            [self.dataArray addObject:mdic];
+        }
+        self.title = @"已选择0条记录";
+        [self.tableView reloadData];
+    }else{
+        [kqAllTools showTipTextOnWindow:[[rootDic valueForKey:@"messageheader"] valueForKey:@"errmsg"]];
+    }
+}
+
+-(void) initTopBar
+{
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton.frame = CGRectMake(0, 0, 44, 44);
+    [rightButton setBackgroundImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(tapRightButton) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rbbi = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    self.navigationItem.leftBarButtonItem = rbbi;
+}
+
+-(void) tapRightButton
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark tableView代理
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.dataArray.count;
+//        return 4;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.0f;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    kqDeleteCallRecorderTableViewCell *cell = (kqDeleteCallRecorderTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:@"kqDeleteCallRecorderTableViewCell" owner:self options:nil] objectAtIndex:0];
+    [cell initCellWithDictionary:[self.dataArray objectAtIndex:indexPath.row]];
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    NSMutableDictionary *mdic = [self.dataArray objectAtIndex:indexPath.row];
+    BOOL flag = [[mdic valueForKey:@"flag"] boolValue];
+    [mdic setValue:[NSNumber numberWithBool:!flag] forKey:@"flag"];
+    NSInteger count = 0;
+    for (NSMutableDictionary *mmdic in self.dataArray) {
+        BOOL mflag = [[mmdic valueForKey:@"flag"] boolValue];
+        if (mflag) {
+            count++;
+        }
+    }
+    self.title = [NSString stringWithFormat:@"已选%lu条记录",count];
+    if (count == self.dataArray.count) {
+        [self.selectButton setTitle:@"已全选" forState:UIControlStateNormal];
+    }else{
+        [self.selectButton setTitle:@"全选" forState:UIControlStateNormal];
+    }
+    [self.tableView reloadData];
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

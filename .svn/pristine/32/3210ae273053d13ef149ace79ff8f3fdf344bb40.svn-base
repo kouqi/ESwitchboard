@@ -1,0 +1,14 @@
+//
+//  LeftViewController.h
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/6/11.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface LeftViewController : UIViewController
+//@property(strong, nonatomic) NSMutableDictionary *dataDictionary;
+-(void) initDataArray;
+@end

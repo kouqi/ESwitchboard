@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="struct__VTableReference" kind="struct" prot="public">
+    <compoundname>_VTableReference</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct__VTableReference_1a0410ea618c9e20b74993206e29095354" prot="public" static="no" mutable="no">
+        <type><ref refid="group__initializing_1ga1ca71386f318e4044967ddf32ac7aacb" kindref="member">LinphoneCoreVTable</ref> *</type>
+        <definition>LinphoneCoreVTable* _VTableReference::vtable</definition>
+        <argsstring></argsstring>
+        <name>vtable</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="1163" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="1163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__VTableReference_1a80a76986390d53faccbd7fb99e6720d9" prot="public" static="no" mutable="no">
+        <type>bool_t</type>
+        <definition>bool_t _VTableReference::valid</definition>
+        <argsstring></argsstring>
+        <name>valid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="1164" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="1164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__VTableReference_1a053bc85653d85d623de1e4cea0ee6ca9" prot="public" static="no" mutable="no">
+        <type>bool_t</type>
+        <definition>bool_t _VTableReference::autorelease</definition>
+        <argsstring></argsstring>
+        <name>autorelease</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="1165" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="1165" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="143">
+        <label>_LinphoneCoreVTable</label>
+        <link refid="struct__LinphoneCoreVTable"/>
+      </node>
+      <node id="142">
+        <label>_VTableReference</label>
+        <childnode refid="143" relation="usage">
+          <edgelabel>vtable</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="1162" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="1162" bodyend="1166"/>
+    <listofallmembers>
+      <member refid="struct__VTableReference_1a053bc85653d85d623de1e4cea0ee6ca9" prot="public" virt="non-virtual"><scope>_VTableReference</scope><name>autorelease</name></member>
+      <member refid="struct__VTableReference_1a80a76986390d53faccbd7fb99e6720d9" prot="public" virt="non-virtual"><scope>_VTableReference</scope><name>valid</name></member>
+      <member refid="struct__VTableReference_1a0410ea618c9e20b74993206e29095354" prot="public" virt="non-virtual"><scope>_VTableReference</scope><name>vtable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

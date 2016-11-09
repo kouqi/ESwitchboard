@@ -1,0 +1,141 @@
+//
+//  kqLoginViewController.m
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/7/25.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import "kqLoginViewController.h"
+
+@interface kqLoginViewController ()<kqDownloadManagerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIView *superView;
+
+@end
+
+@implementation kqLoginViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.loginName.layer.cornerRadius = 5.0f;
+    self.password.layer.cornerRadius = 5.0f;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    // Do any additional setup after loading the view from its nib.
+}
+- (IBAction)tapCancelView:(UITapGestureRecognizer *)sender {
+    [self.loginName resignFirstResponder];
+    [self.password resignFirstResponder];
+}
+
+#pragma keyBoardNotification
+-(void) keyboardWillShow:(NSNotification *)note
+{
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    self.superView.translatesAutoresizingMaskIntoConstraints = YES;
+    self.superView.frame = CGRectMake(0, 0 - self.loginName.frame.origin.y + 124 , self.superView.frame.size.width, self.superView.frame.size.height);
+    [UIView commitAnimations];
+}
+
+-(void) keyboardWillHide:(NSNotification *)note
+{
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    self.superView.frame = CGRectMake(0, 0 , self.superView.frame.size.width, self.superView.frame.size.height);
+    [UIView commitAnimations];
+}
+
+- (IBAction)tapLoginButton:(UIButton *)sender {
+    if ([self checkOut]) {
+        kqDownloadManager *dl = [kqDownloadManager sharedDownLoadManager];
+        dl.delegate = self;
+        [dl requestLoginWithLonginName:self.loginName.text andPassword:self.password.text];
+        [kqAllTools showOnWindow:@"登录中"];
+    }
+}
+
+-(BOOL)checkOut
+{
+    if ([self checkTel:self.loginName.text]) {
+        if (self.password.text.length == 0) {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请输入密码" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return NO;
+        }
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)checkTel:(NSString *)str
+
+{
+    if ([str length] == 0) {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请输入手机号" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return NO;
+    }
+    //1[0-9]{10}
+    //^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$
+    //    NSString *regex = @"[0-9]{11}";
+    NSString *regex = @"^((13[0-9])|(147)|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    BOOL isMatch = [pred evaluateWithObject:str];
+    if (!isMatch) {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请输入正确的手机号码" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return NO;
+    }
+    return YES;
+}
+
+-(void)requestLoginDelegate:(NSDictionary *)rootDic
+{
+    [kqAllTools hidenHUD];
+    
+    if ([[rootDic valueForKey:@"respMsg"] isEqualToString:@"请求成功"]) {
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:self.loginName.text forKey:@"loginName"];
+        [dic setValue:self.password.text forKey:@"password"];
+        [ud setValue:dic forKey:@"loginDic"];
+        [ud synchronize];
+    }
+    [self.delegate loginDelegete:rootDic];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

@@ -1,0 +1,16 @@
+//
+//  kqPersonalInfomation.h
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/7/25.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface kqPersonalInfomation : NSObject
+@property(strong,nonatomic) NSString *phoneNumber,*password,*callNumber,*isHost,*hName,*company,*userPosition,*nickName,*userIcon;
+@property(strong, nonatomic) NSMutableArray *extenseionArray;
+@property(assign, nonatomic) NSUInteger tabBarSelectedIndex;
++(kqPersonalInfomation *)sharedPersonalInfomation;
+@end

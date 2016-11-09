@@ -1,0 +1,13 @@
+digraph "submodules" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_70e119ec7732bd017bc188a7129d48ee {
+    graph [ bgcolor="#ddddee", pencolor="black", label="linphone-iphone" fontname="Helvetica", fontsize="10", URL="dir_70e119ec7732bd017bc188a7129d48ee.html"]
+  subgraph clusterdir_cf4c98acb38bffd48d5ffefce9055b2c {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_cf4c98acb38bffd48d5ffefce9055b2c.html"];
+    dir_cf4c98acb38bffd48d5ffefce9055b2c [shape=plaintext label="submodules"];
+    dir_b04f89f5a7f8ec29a0b9160f0e142536 [shape=box label="linphone" color="red" fillcolor="white" style="filled" URL="dir_b04f89f5a7f8ec29a0b9160f0e142536.html"];
+  }
+  }
+}

@@ -1,0 +1,17 @@
+//
+//  kqHomeViewTableViewCell.h
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/7/25.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface kqHomeViewTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *flagImageView;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *longTimeLabel;
+-(void) initCellWithDictionary:(NSDictionary *) dic;
+@end

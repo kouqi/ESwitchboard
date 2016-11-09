@@ -1,0 +1,4 @@
+${SDK_DIR}/usr/include/libxml2
+-lxml2
+
+

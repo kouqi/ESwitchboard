@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="struct__PortConfig" kind="struct" prot="public">
+    <compoundname>_PortConfig</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct__PortConfig_1a0c3c10334788c86259e41518af80181d" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char _PortConfig::multicast_ip[64]</definition>
+        <argsstring>[64]</argsstring>
+        <name>multicast_ip</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="205" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="205" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__PortConfig_1ae29114ef2deae9af18c2254ded03b865" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int _PortConfig::mcast_rtp_port</definition>
+        <argsstring></argsstring>
+        <name>mcast_rtp_port</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="206" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="206" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__PortConfig_1a5a89adb04d3e110eeb9b219b0eacfc15" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int _PortConfig::mcast_rtcp_port</definition>
+        <argsstring></argsstring>
+        <name>mcast_rtcp_port</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="207" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="207" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__PortConfig_1a6053b319b1ea20bff43c6050941dd524" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int _PortConfig::rtp_port</definition>
+        <argsstring></argsstring>
+        <name>rtp_port</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="208" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="208" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__PortConfig_1a640750dc0a8c835a245d23b4781482fe" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int _PortConfig::rtcp_port</definition>
+        <argsstring></argsstring>
+        <name>rtcp_port</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="209" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="209" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" line="204" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/private.h" bodystart="204" bodyend="210"/>
+    <listofallmembers>
+      <member refid="struct__PortConfig_1a5a89adb04d3e110eeb9b219b0eacfc15" prot="public" virt="non-virtual"><scope>_PortConfig</scope><name>mcast_rtcp_port</name></member>
+      <member refid="struct__PortConfig_1ae29114ef2deae9af18c2254ded03b865" prot="public" virt="non-virtual"><scope>_PortConfig</scope><name>mcast_rtp_port</name></member>
+      <member refid="struct__PortConfig_1a0c3c10334788c86259e41518af80181d" prot="public" virt="non-virtual"><scope>_PortConfig</scope><name>multicast_ip</name></member>
+      <member refid="struct__PortConfig_1a640750dc0a8c835a245d23b4781482fe" prot="public" virt="non-virtual"><scope>_PortConfig</scope><name>rtcp_port</name></member>
+      <member refid="struct__PortConfig_1a6053b319b1ea20bff43c6050941dd524" prot="public" virt="non-virtual"><scope>_PortConfig</scope><name>rtp_port</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

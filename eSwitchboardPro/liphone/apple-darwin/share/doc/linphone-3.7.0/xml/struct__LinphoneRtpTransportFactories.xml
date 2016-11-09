@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="struct__LinphoneRtpTransportFactories" kind="struct" prot="public">
+    <compoundname>_LinphoneRtpTransportFactories</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct__LinphoneRtpTransportFactories_1a89d7ac5c81813d3b8c50c24541a0ba81" prot="public" static="no" mutable="no">
+        <type>LinphoneCoreRtpTransportFactoryFunc</type>
+        <definition>LinphoneCoreRtpTransportFactoryFunc _LinphoneRtpTransportFactories::audio_rtp_func</definition>
+        <argsstring></argsstring>
+        <name>audio_rtp_func</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3103" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__LinphoneRtpTransportFactories_1a14ccf509d6344dc7f480783acf58deb0" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* _LinphoneRtpTransportFactories::audio_rtp_func_data</definition>
+        <argsstring></argsstring>
+        <name>audio_rtp_func_data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3104" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__LinphoneRtpTransportFactories_1a3e237f48b9b3702811a34bd90e6e3b0d" prot="public" static="no" mutable="no">
+        <type>LinphoneCoreRtpTransportFactoryFunc</type>
+        <definition>LinphoneCoreRtpTransportFactoryFunc _LinphoneRtpTransportFactories::audio_rtcp_func</definition>
+        <argsstring></argsstring>
+        <name>audio_rtcp_func</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3105" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__LinphoneRtpTransportFactories_1a2c887bbecea43aad69693a5b95abb0ca" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* _LinphoneRtpTransportFactories::audio_rtcp_func_data</definition>
+        <argsstring></argsstring>
+        <name>audio_rtcp_func_data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3106" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__LinphoneRtpTransportFactories_1ac605cb56b4109562410fc0b299679c53" prot="public" static="no" mutable="no">
+        <type>LinphoneCoreRtpTransportFactoryFunc</type>
+        <definition>LinphoneCoreRtpTransportFactoryFunc _LinphoneRtpTransportFactories::video_rtp_func</definition>
+        <argsstring></argsstring>
+        <name>video_rtp_func</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3107" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__LinphoneRtpTransportFactories_1ab8243adb43e1e6e75d83238229c36b96" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* _LinphoneRtpTransportFactories::video_rtp_func_data</definition>
+        <argsstring></argsstring>
+        <name>video_rtp_func_data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3108" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__LinphoneRtpTransportFactories_1ad8151be00cb5b2dcd83ea96da806320c" prot="public" static="no" mutable="no">
+        <type>LinphoneCoreRtpTransportFactoryFunc</type>
+        <definition>LinphoneCoreRtpTransportFactoryFunc _LinphoneRtpTransportFactories::video_rtcp_func</definition>
+        <argsstring></argsstring>
+        <name>video_rtcp_func</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3109" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct__LinphoneRtpTransportFactories_1a09ad31a32ddd57eacbcb683a02fcdfb0" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* _LinphoneRtpTransportFactories::video_rtcp_func_data</definition>
+        <argsstring></argsstring>
+        <name>video_rtcp_func_data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3110" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3110" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" line="3102" column="1" bodyfile="/Users/jehanmonnier/workspaces/workspace-iphone-port/linphone-iphone/submodules/linphone/coreapi/linphonecore.h" bodystart="3102" bodyend="3111"/>
+    <listofallmembers>
+      <member refid="struct__LinphoneRtpTransportFactories_1a3e237f48b9b3702811a34bd90e6e3b0d" prot="public" virt="non-virtual"><scope>_LinphoneRtpTransportFactories</scope><name>audio_rtcp_func</name></member>
+      <member refid="struct__LinphoneRtpTransportFactories_1a2c887bbecea43aad69693a5b95abb0ca" prot="public" virt="non-virtual"><scope>_LinphoneRtpTransportFactories</scope><name>audio_rtcp_func_data</name></member>
+      <member refid="struct__LinphoneRtpTransportFactories_1a89d7ac5c81813d3b8c50c24541a0ba81" prot="public" virt="non-virtual"><scope>_LinphoneRtpTransportFactories</scope><name>audio_rtp_func</name></member>
+      <member refid="struct__LinphoneRtpTransportFactories_1a14ccf509d6344dc7f480783acf58deb0" prot="public" virt="non-virtual"><scope>_LinphoneRtpTransportFactories</scope><name>audio_rtp_func_data</name></member>
+      <member refid="struct__LinphoneRtpTransportFactories_1ad8151be00cb5b2dcd83ea96da806320c" prot="public" virt="non-virtual"><scope>_LinphoneRtpTransportFactories</scope><name>video_rtcp_func</name></member>
+      <member refid="struct__LinphoneRtpTransportFactories_1a09ad31a32ddd57eacbcb683a02fcdfb0" prot="public" virt="non-virtual"><scope>_LinphoneRtpTransportFactories</scope><name>video_rtcp_func_data</name></member>
+      <member refid="struct__LinphoneRtpTransportFactories_1ac605cb56b4109562410fc0b299679c53" prot="public" virt="non-virtual"><scope>_LinphoneRtpTransportFactories</scope><name>video_rtp_func</name></member>
+      <member refid="struct__LinphoneRtpTransportFactories_1ab8243adb43e1e6e75d83238229c36b96" prot="public" virt="non-virtual"><scope>_LinphoneRtpTransportFactories</scope><name>video_rtp_func_data</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

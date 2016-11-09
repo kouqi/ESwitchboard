@@ -1,0 +1,202 @@
+//
+//  kqDownloadManager.m
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/7/25.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import "kqDownloadManager.h"
+
+@implementation kqDownloadManager
+static kqDownloadManager *dl;
++(kqDownloadManager *)sharedDownLoadManager
+{
+    @synchronized(self)
+    {
+        if (dl == nil) {
+            dl = [[self alloc] init];
+        }
+        return dl;
+    }
+}
+
+//登录
+-(void) requestLoginWithLonginName:(NSString *) loginName andPassword:(NSString *) password
+{
+//    NSString *urlString = [NSString stringWithFormat:@"%@host/host!findHostApp.action?code=%@&phoneNumber=%@",MAIN_HOST,password,loginName];
+    NSString *urlString = [NSString stringWithFormat:@"%@host/host!loginPasswordApp.action?phoneNumber=%@&password=%@",MAIN_HOST,loginName,password];
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    request.delegate = self;
+    request.tag = REQUEST_LOGIN;
+    [request setRequestMethod:@"GET"];
+    [request startAsynchronous];
+}
+
+//获取账号信息
+-(void) requestAcountInfoWithLonginName:(NSString *) loginName andCode:(NSString *) code
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@host/host!findHostApp.action?code=%@&phoneNumber=%@",MAIN_HOST,code,loginName];
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    request.delegate = self;
+    request.tag = REQUEST_GETACCOUNTINFO;
+    [request setRequestMethod:@"GET"];
+    [request startAsynchronous];
+}
+
+//获取通话记录
+-(void) requestCallRecorderWithPhoneNumber:(NSString *) phoneNumber andPageNo:(NSInteger) pageNo
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@call/call!listCallApp.action?phoneNumber=%@&pageNo=%ld",MAIN_HOST,phoneNumber,(long)pageNo];
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    request.delegate = self;
+    request.tag = REQUEST_CALLRECODER;
+    [request setRequestMethod:@"GET"];
+    [request startAsynchronous];
+}
+
+//获取分机号列表
+-(void) requestExtension
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@ext/ext!listApp.action?isExt=0",MAIN_HOST];
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    request.delegate = self;
+    request.tag = REQUEST_GETEXTENSION;
+    [request setRequestMethod:@"GET"];
+    [request startAsynchronous];
+}
+
+//重置密码
+-(void) requestResetPasswordWithPhoneNumber:(NSString *) phoneNumber andOldPassword:(NSString *) oldPassword andNewPassword:(NSString *) newPassword
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@host/host!updatePasswordApp.action?phoneNumber=%@&password=%@&newPassword=%@",MAIN_HOST,phoneNumber,oldPassword,newPassword];
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    request.delegate = self;
+    request.tag = REQUEST_RESETPASSWORD;
+    [request setRequestMethod:@"GET"];
+    [request startAsynchronous];
+}
+
+//绑定号码
+-(void) requestBingdingPhoneNumberWithPhoneNumber:(NSString *) phoneNumber andId:(NSString *) idString
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@/ext/ext!saveApp.action?phoneNumber=%@&id=%@",MAIN_HOST,phoneNumber,idString];
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    request.delegate = self;
+    request.tag = REQUEST_BINDINGNUMBER;
+    [request setRequestMethod:@"GET"];
+    [request startAsynchronous];
+}
+
+//TODO:极光推送
+-(void)sendJPushWithContent:(NSString *) msgContent andAlias:(NSArray *)aliasArray
+{
+    NSMutableString *aliasString = [NSMutableString stringWithFormat:@"\"alias\":["];
+    for (NSString *aliasssString in aliasArray) {
+        [aliasString appendFormat:@"\"%@\",",aliasssString];
+    }
+    NSMutableString *aliaString = [NSMutableString stringWithFormat:@"%@",[aliasString substringWithRange:NSMakeRange(0, aliasString.length - 1)]];
+    [aliaString appendFormat:@"]"];
+    
+    NSString *urlStr = [NSString stringWithFormat:@"https://api.jpush.cn/v3/push"];
+    NSString *mbsae64String = [NSString stringWithFormat:@"%@:%@",JPUSHAPPKEY,JPUSHMASTERSECRET];
+    NSString *base64 = [GTMBase64 stringByEncodingData:[mbsae64String dataUsingEncoding:NSUTF8StringEncoding]];
+    NSString *extras = [NSString stringWithFormat:@"{\"msgContent\":\"%@\"}",msgContent];
+//    NSString *androids = [NSString stringWithFormat:@"\"android\":{\"alert\":\"%@\",\"title\":\"i宝贝\",\"builder_id\":1,\"extras\":%@},",msgContent,extras];
+//    NSString *jsonStr = [NSString stringWithFormat:@"{\"platform\":[\"android\",\"ios\"],\"audience\":{%@},\"notification\":{%@\"ios\":{\"alert\":\"%@\",\"extras\":%@,\"badge\":\"1\",\"sound\":\"default\"}},\"options\":{\"sendno\":1740932926,\"apns_production\": false}}",aliaString,androids,msgContent,extras];
+    NSString *jsonStr = [NSString stringWithFormat:@"{\"platform\":[\"ios\"],\"audience\":{%@},\"notification\":{\"ios\":{\"alert\":\"%@\",\"extras\":%@,\"badge\":\"1\",\"sound\":\"default\"}},\"options\":{\"sendno\":1740932926,\"apns_production\": false}}",aliaString,msgContent,extras];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request addRequestHeader:@"Content-Type" value:@"application/json"];
+    [request addRequestHeader:@"Authorization" value:[NSString stringWithFormat:@"Basic %@",base64]];
+    [request setPostBody:[[NSMutableData alloc] initWithData:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]]];
+    request.delegate = self;
+    request.tag = JPUSH_TAG;
+    [request setRequestMethod:@"POST"];
+    [request startAsynchronous];
+}
+
+-(void) requestModifyPersonalInfomationWithName:(NSString *) nameString andNickName:(NSString *) nickNameString andCompany:(NSString *) companyString andPostion:(NSString *) postionString andHeaderImage:(UIImage *) headerImage
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@host/host!editUser.action",MAIN_HOST];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    request.delegate = self;
+    request.tag = REQUEST_MODIFYPERSONALINFOMATION;
+    [request setRequestMethod:@"POST"];
+    if (headerImage) {
+        NSData *imaData = UIImageJPEGRepresentation(headerImage, 0.5f);
+        NSString *imageStr = [GTMBase64 stringByEncodingData:imaData];
+        [request setPostValue:imageStr forKey:@"base64Code"];
+//        [request setPostValue:imageStr forKey:@"file"];
+        [request setPostValue:@"png" forKey:@"expand"];
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        [formatter setDateFormat:@"yyyyMMddHHmmss"];
+//        NSString *fileName = [formatter stringFromDate:[NSDate date]];
+//        [request setPostValue:fileName forKey:@"fileName"];
+    }
+    [request setPostValue:nameString forKey:@"name"];
+    [request setPostValue:nickNameString forKey:@"nickName"];
+    [request setPostValue:companyString forKey:@"company"];
+    [request setPostValue:postionString forKey:@"userPosition"];
+    [request startAsynchronous];
+}
+
+//TODO:请求代理方法
+/**
+ *  <#Description#>
+ *
+ *  @param request <#request description#>
+ */
+-(void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSLog(@"--------------%@",request.responseString);
+    if (request.tag == JPUSH_TAG) {
+        return;
+    }
+    NSDictionary * rootDic = [[NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingAllowFragments error:nil] objectAtIndex:0];
+    if (request.tag == REQUEST_LOGIN) {
+        if ([self.delegate respondsToSelector:@selector(requestLoginDelegate:)]) {
+            [self.delegate requestLoginDelegate:rootDic];
+        }
+        return;
+    }
+    if (request.tag == REQUEST_CALLRECODER) {
+        if ([self.delegate respondsToSelector:@selector(requestCallRecoderDelegate:)]) {
+            [self.delegate requestCallRecoderDelegate:rootDic];
+        }
+        return;
+    }
+    if (request.tag == REQUEST_GETEXTENSION) {
+        if ([self.delegate respondsToSelector:@selector(requestExtensionDelegate:)]) {
+            [self.delegate requestExtensionDelegate:rootDic];
+        }
+        return;
+    }
+    if (request.tag == REQUEST_GETACCOUNTINFO) {
+        if ([self.delegate respondsToSelector:@selector(requestAcountInfoDelegate:)]) {
+            [self.delegate requestAcountInfoDelegate:rootDic];
+        }
+        return;
+    }
+    if (request.tag == REQUEST_RESETPASSWORD) {
+        if ([self.delegate respondsToSelector:@selector(requestResetPasswordDelegate:)]) {
+            [self.delegate requestResetPasswordDelegate:rootDic];
+        }
+        return;
+    }
+    if (REQUEST_BINDINGNUMBER == request.tag) {
+        if ([self.delegate respondsToSelector:@selector(requestBingdingPhoneNumberDelegate:)]) {
+            [self.delegate requestBingdingPhoneNumberDelegate:rootDic];
+        }
+    }
+    if (REQUEST_MODIFYPERSONALINFOMATION == request.tag) {
+        if ([self.delegate respondsToSelector:@selector(requestModifyPersonalInfomationDelegate:)]) {
+            [self.delegate requestModifyPersonalInfomationDelegate:rootDic];
+        }
+    }
+}
+
+-(void)requestFailed:(ASIHTTPRequest *)request
+{
+    
+}
+@end

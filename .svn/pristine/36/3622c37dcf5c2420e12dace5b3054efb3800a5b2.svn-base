@@ -1,0 +1,24 @@
+//
+//  eSwitchboard.pch
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/6/3.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#ifndef eSwitchboardPro_eSwitchboard_pch
+#define eSwitchboardPro_eSwitchboard_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#ifdef __OBJC__
+#import "kqGenarl.h"
+#import "kqDownloadManager.h"
+#import "kqAllTools.h"
+#import "kqPersonalInfomation.h"
+#import "kqDataBase.h"
+#import "LinphoneManager.h"
+#import "UIImageView+WebCache.h"
+#endif
+
+#endif

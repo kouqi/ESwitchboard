@@ -1,0 +1,13 @@
+digraph "workspaces" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_0086a5bc28c2c80fdd65429b30ec7201 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="jehanmonnier" fontname="Helvetica", fontsize="10", URL="dir_0086a5bc28c2c80fdd65429b30ec7201.html"]
+  subgraph clusterdir_b858f17e34ed058634411ab8c7d24549 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_b858f17e34ed058634411ab8c7d24549.html"];
+    dir_b858f17e34ed058634411ab8c7d24549 [shape=plaintext label="workspaces"];
+    dir_0b63d9ddac5e0eae8010f03443fa7c42 [shape=box label="workspace-iphone-port" color="red" fillcolor="white" style="filled" URL="dir_0b63d9ddac5e0eae8010f03443fa7c42.html"];
+  }
+  }
+}

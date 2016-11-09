@@ -1,0 +1,11 @@
+digraph "voip" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_4fb411e34fa449b2d37fdd2c0c9098fd {
+    graph [ bgcolor="#ddddee", pencolor="black", label="src" fontname="Helvetica", fontsize="10", URL="dir_4fb411e34fa449b2d37fdd2c0c9098fd.html"]
+  dir_39a1a47d6391827be1c48a267f693515 [shape=box, label="voip", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_39a1a47d6391827be1c48a267f693515.html"];
+  }
+  dir_4e535993d7e33f8f8dc7bdd155cc6615 [shape=box label="include" fillcolor="white" style="filled" color="red" URL="dir_4e535993d7e33f8f8dc7bdd155cc6615.html"];
+  dir_39a1a47d6391827be1c48a267f693515->dir_4e535993d7e33f8f8dc7bdd155cc6615 [headlabel="12", labeldistance=1.5 headhref="dir_000013_000010.html"];
+}

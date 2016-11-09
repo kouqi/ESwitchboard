@@ -1,0 +1,426 @@
+//
+//  LeftViewController.m
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/6/11.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import "LeftViewController.h"
+#import "Home/HomeViewController.h"
+#import "kqMailListViewController.h"
+#import "DialViewController.h"
+#import "APService.h"
+#import "kqPersonalCenterViewController.h"
+@interface LeftViewController ()<kqDownloadManagerDelegate,UITabBarControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIView *setView;
+@property(strong, nonatomic) UITabBarController *bottomTabBarController;
+@property(strong, nonatomic) UINavigationController *homeNavigationController;
+@property(strong, nonatomic) HomeViewController *homeViewController;
+@property(strong, nonatomic) DialViewController *dialViewControler;
+@property(strong, nonatomic) kqMailListViewController *mailListViewController;
+@property(strong, nonatomic) kqPersonalCenterViewController *personalCenterViewController;
+@property(assign, nonatomic) CGFloat distance, fullDistance, proportion, screenWidth, screenHeight;
+@end
+
+@implementation LeftViewController
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+}
+
+-(void) initViewController
+{
+    self.homeViewController = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+    self.homeViewController.title = @"云⋅总机";
+    self.homeViewController.tabBarItem.title = @"通话记录";
+    [self.homeViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(104, 104, 104, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
+//    [self.homeViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(79, 191, 77, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+    [self.homeViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(102, 135, 185, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+//    [self.homeViewController.tabBarItem setImage:[[UIImage imageNamed:@"home_bottom_record_n"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+//    self.homeViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"home_bottom_record_p"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    [self.homeViewController.tabBarItem setImage:[[UIImage imageNamed:@"ic_tab_call_record_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    self.homeViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"ic_tab_call_record_pressed"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
+    self.homeNavigationController = [[UINavigationController alloc] initWithRootViewController:self.homeViewController];
+    self.dialViewControler = [[DialViewController alloc] initWithNibName:@"DialViewController" bundle:nil];
+    self.dialViewControler.title = @"拨号";
+    self.dialViewControler.tabBarItem.title = @"拨号";
+    [self.dialViewControler.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(104, 104, 104, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
+//    [self.dialViewControler.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(79, 191, 77, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+    [self.dialViewControler.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(102, 135, 185, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+//    self.dialViewControler.tabBarItem.image = [[UIImage imageNamed:@"home_bottom_dail_n"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    self.dialViewControler.tabBarItem.selectedImage = [[UIImage imageNamed:@"home_bottom_dail_p"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.dialViewControler.tabBarItem.image = [[UIImage imageNamed:@"ic_tab_call_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.dialViewControler.tabBarItem.selectedImage = [[UIImage imageNamed:@"ic_tab_call_pressed"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
+    UINavigationController *dnavi = [[UINavigationController alloc] initWithRootViewController:self.dialViewControler];
+    self.mailListViewController = [[kqMailListViewController alloc] initWithNibName:@"kqMailListViewController" bundle:nil];
+    self.mailListViewController.title = @"通讯录";
+    self.mailListViewController.tabBarItem.title = @"通讯录";
+    [self.mailListViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(104, 104, 104, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
+//    [self.mailListViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(79, 191, 77, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+    [self.mailListViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(102, 135, 185, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+//    self.mailListViewController.tabBarItem.image = [[UIImage imageNamed:@"home_bottom_contact_n"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    self.mailListViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"home_bottom_contact_p"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.mailListViewController.tabBarItem.image = [[UIImage imageNamed:@"ic_tab_contact_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.mailListViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"ic_tab_contact_pressed"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
+    UINavigationController *mlnavi = [[UINavigationController alloc] initWithRootViewController:self.mailListViewController];
+    self.personalCenterViewController = [[kqPersonalCenterViewController alloc] initWithNibName:@"kqPersonalCenterViewController" bundle:nil];
+    self.personalCenterViewController.title = @"个人中心";
+    self.personalCenterViewController.tabBarItem.title = @"个人中心";
+    [self.personalCenterViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(104, 104, 104, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
+//    [self.personalCenterViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(79, 191, 77, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+    [self.personalCenterViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(102, 135, 185, 1),NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+//    self.personalCenterViewController.tabBarItem.image = [[UIImage imageNamed:@"home_bottom_person_n"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    self.personalCenterViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"home_bottom_person_p"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.personalCenterViewController.tabBarItem.image = [[UIImage imageNamed:@"ic_tab_personal_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.personalCenterViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"ic_tab_personal_pressed"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
+    UINavigationController *pcnavi = [[UINavigationController alloc] initWithRootViewController:self.personalCenterViewController];
+    NSMutableArray *viewArr = [NSMutableArray arrayWithObjects:self.homeNavigationController,mlnavi,dnavi,pcnavi, nil];
+    self.bottomTabBarController = [[UITabBarController alloc] init];
+    self.bottomTabBarController.viewControllers = viewArr;
+    self.bottomTabBarController.view.frame = self.view.frame;
+    [self.view addSubview:self.bottomTabBarController.view];
+    self.bottomTabBarController.view.center = self.view.center;
+    self.bottomTabBarController.delegate = self;
+    
+    self.distance = 0;
+    self.fullDistance = 0.78;
+    self.proportion = 0.77;
+    self.screenWidth = [UIScreen mainScreen].applicationFrame.size.width;
+    self.screenHeight = [UIScreen mainScreen].applicationFrame.size.height;
+    self.homeViewController.leftBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.homeViewController.leftBackButton.frame = CGRectMake(0, 0, 44, 44);
+    self.homeViewController.leftBackButton.hidden = YES;
+    //    self.homeViewController.leftBackButton.backgroundColor = [UIColor yellowColor];
+    [self.homeViewController.leftBackButton setBackgroundImage:[UIImage imageNamed:@"leftVCButton.png"] forState:UIControlStateNormal];
+    [self.homeViewController.leftBackButton addTarget:self action:@selector(didTapLeftButton) forControlEvents:UIControlEventTouchUpInside];
+    self.homeViewController.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapLeftButton)];
+    self.homeViewController.tap.enabled = NO;
+    [self.homeViewController.view addGestureRecognizer:self.homeViewController.tap];
+}
+
+//-(void)requestAcountInfoDelegate:(NSDictionary *)rootDic
+//{
+//    [kqAllTools hidenHUD];
+//    [self initViewController];
+//    [self.personalCenterViewController initTableViewWithDictionary:rootDic];
+//    
+//    kqPersonalInfomation *pinfo = [kqPersonalInfomation sharedPersonalInfomation];
+////    pinfo.phoneNumber = [NSString stringWithFormat:@"%@",[[rootDic valueForKey:@"ext"] valueForKey:@"phoneNumber"]];
+////    pinfo.isHost = [rootDic valueForKey:@"isHost"];
+//    //    pinfo.password =
+//    if ([[rootDic valueForKey:@"isHost"] isEqualToString:@"0"]) {
+//        pinfo.callNumber = [NSString stringWithFormat:@"%@",[[rootDic valueForKey:@"data"] valueForKey:@"hostNumber"]];
+//    }else{
+//        pinfo.callNumber = [NSString stringWithFormat:@"%@%@",[[rootDic valueForKey:@"data"] valueForKey:@"hostNumber"],[[rootDic valueForKey:@"ext"] valueForKey:@"extensionNumber"]];
+//    }
+//    [APService setAlias:pinfo.callNumber callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:pinfo.callNumber];
+//    //    kqDownloadManager *dl = [kqDownloadManager sharedDownLoadManager];
+//    //    dl.delegate = self;
+//    //    [dl requestCallRecorderWithPhoneNumber:pinfo.callNumber andPageNo:1];
+//    //    [kqAllTools showOnWindow:@"加载中"];
+//    NSMutableString *logname;
+//    if ([[rootDic valueForKey:@"isHost"] isEqualToString:@"0"]) {
+//        logname = [NSMutableString stringWithFormat:@"%@",[[rootDic valueForKey:@"data"] valueForKey:@"hostNumber"]];
+//    }else{
+//        logname = [NSMutableString stringWithFormat:@"%@%@",[[rootDic valueForKey:@"data"] valueForKey:@"hostNumber"],[[rootDic valueForKey:@"ext"] valueForKey:@"extensionNumber"]];
+//    }
+//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *dic = [ud valueForKey:@"loginDic"];
+//    NSString *loginName = [dic valueForKey:@"loginName"];
+////    NSString *password = [dic valueForKey:@"password"];
+//    NSString *domin = @"182.92.224.250";
+//    NSString *transport = @"UDP";
+//    if (loginName) {
+////        [self verificationSignInWithUsername:logname password:password domain:domin withTransport:transport];
+//    }
+//}
+
+-(void)tagsAliasCallback:(int)iResCode tags:(NSSet *)tags alias:(NSString *)alias
+{
+    NSLog(@"rescode: %d, \ntags: %@, \nalias: %@\n", iResCode, tags , alias);
+}
+
+-(void) initDataArray
+{
+    kqDownloadManager *dl = [kqDownloadManager sharedDownLoadManager];
+    dl.delegate = self;
+//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *dic = [ud valueForKey:@"loginDic"];
+//    NSString *loginName = [dic valueForKey:@"loginName"];
+//    NSString *password = [dic valueForKey:@"password"];
+//    [dl requestAcountInfoWithLonginName:loginName andCode:password];
+    [dl gainUserInfomation];
+    [kqAllTools showOnWindow:@"加载中"];
+}
+
+-(void)gainUserInfomationDelegate:(NSDictionary *)rootDic
+{
+//    [kqAllTools hidenHUD];
+    [self initViewController];
+    [self.personalCenterViewController initTableViewWithDictionary:rootDic];
+    
+    kqPersonalInfomation *pinfo = [kqPersonalInfomation sharedPersonalInfomation];
+    if ([pinfo.ishost intValue] == 0) {
+        pinfo.callNumber = [NSString stringWithFormat:@"%@",[pinfo.eboHost valueForKey:@"hostnumber"]];
+    }else{
+        pinfo.callNumber = [NSString stringWithFormat:@"%@",[pinfo.eboExt valueForKey:@"extnumber"]];
+    }
+    [APService setAlias:pinfo.callNumber callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:pinfo.callNumber];
+    
+    
+    NSMutableString *logname;
+    if ([pinfo.ishost intValue] == 0) {
+        logname = [NSMutableString stringWithFormat:@"%@",[pinfo.eboHost valueForKey:@"hostnumber"]];
+    }else{
+        logname = [NSMutableString stringWithFormat:@"%@",[pinfo.eboExt valueForKey:@"extnumber"]];
+    }
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [ud valueForKey:@"loginDic"];
+    NSString *loginName = [dic valueForKey:@"loginName"];
+    NSString *password = pinfo.sippassword;
+    NSString *domin = @"182.92.224.250";
+    NSString *transport = @"UDP";
+    if (loginName) {
+        [self verificationSignInWithUsername:logname password:password domain:domin withTransport:transport];
+    }
+}
+
+
+
+//-(void)requestCallRecoderDelegate:(NSDictionary *)rootDic
+//{
+//    [kqAllTools hidenHUD];
+//    if ([[rootDic valueForKey:@"respMsg"] isEqualToString:@"请求成功"]) {
+//        self.homeViewController.dataDictionary = [NSMutableDictionary dictionaryWithDictionary:[rootDic valueForKey:@"data"]];
+//        self.homeViewController.dataArray = [NSMutableArray arrayWithArray:[[rootDic valueForKey:@"data"] valueForKey:@"result"]];
+//        [self.homeViewController.tableView reloadData];
+//        
+//        
+//    }else{
+//        [kqAllTools showAlertViewWithTitle:@"提示" andMessage:[rootDic valueForKey:@"respMsg"]];
+//    }
+//}
+
+- (BOOL) verificationWithUsername:(NSString*)username password:(NSString*)password domain:(NSString*)domain withTransport:(NSString*)transport {
+    NSMutableString *errors = [NSMutableString string];
+    if ([username length] == 0) {
+        [errors appendString:[NSString stringWithFormat:NSLocalizedString(@"Please enter a valid username.\n", nil)]];
+    }
+    
+    if (domain != nil && [domain length] == 0) {
+        [errors appendString:[NSString stringWithFormat:NSLocalizedString(@"Please enter a valid domain.\n", nil)]];
+    }
+    
+    if([errors length]) {
+        UIAlertView* errorView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Check error(s)",nil)
+                                                            message:[errors substringWithRange:NSMakeRange(0, [errors length] - 1)]
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"Continue",nil)
+                                                  otherButtonTitles:nil,nil];
+        [errorView show];
+        return FALSE;
+    }
+    return TRUE;
+}
+
+- (void) verificationSignInWithUsername:(NSString*)username password:(NSString*)password domain:(NSString*)domain withTransport:(NSString*)transport {
+    if ([self verificationWithUsername:username password:password domain:domain withTransport:transport]) {
+        if ([LinphoneManager instance].connectivity == none) {
+//            [kqAllTools showAlertViewWithTitle:@"没有网络连接" andMessage:@"请连接网络"];
+            [kqAllTools showTipTextOnWindow:@"没有网络连接！"];
+        } else {
+//            NSString *pass = @"123456";
+            [self addProxyConfig:username password:password domain:domain withTransport:transport];//和app登录密码保持一致
+//            [self addProxyConfig:username password:pass domain:domain withTransport:transport];//密码都是123456
+        }
+    }
+}
+
+- (BOOL)addProxyConfig:(NSString*)username password:(NSString*)password domain:(NSString*)domain withTransport:(NSString*)transport {
+    LinphoneCore* lc = [LinphoneManager getLc];
+    LinphoneProxyConfig* proxyCfg = linphone_core_create_proxy_config(lc);
+    NSString* server_address = domain;
+    
+    char normalizedUserName[256];
+    linphone_proxy_config_normalize_number(proxyCfg, [username cStringUsingEncoding:[NSString defaultCStringEncoding]], normalizedUserName, sizeof(normalizedUserName));
+    
+    const char* identity = linphone_proxy_config_get_identity(proxyCfg);
+    if( !identity || !*identity ) identity = "sip:user@example.com";
+    
+    LinphoneAddress* linphoneAddress = linphone_address_new(identity);
+    linphone_address_set_username(linphoneAddress, normalizedUserName);
+    
+    if( domain && [domain length] != 0) {
+        if( transport != nil ){
+            server_address = [NSString stringWithFormat:@"%@;transport=%@", server_address, [transport lowercaseString]];
+        }
+        // when the domain is specified (for external login), take it as the server address
+        linphone_proxy_config_set_server_addr(proxyCfg, [server_address UTF8String]);
+        linphone_address_set_domain(linphoneAddress, [domain UTF8String]);
+    }
+    
+    char* extractedAddres = linphone_address_as_string_uri_only(linphoneAddress);
+    
+    LinphoneAddress* parsedAddress = linphone_address_new(extractedAddres);
+    ms_free(extractedAddres);
+    
+    if( parsedAddress == NULL || !linphone_address_is_sip(parsedAddress) ){
+        if( parsedAddress ) linphone_address_destroy(parsedAddress);
+        UIAlertView* errorView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Check error(s)",nil)
+                                                            message:NSLocalizedString(@"Please enter a valid username", nil)
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"Continue",nil)
+                                                  otherButtonTitles:nil,nil];
+        [errorView show];
+        return FALSE;
+    }
+    
+    char *c_parsedAddress = linphone_address_as_string_uri_only(parsedAddress);
+    
+    linphone_proxy_config_set_identity(proxyCfg, c_parsedAddress);
+    
+    linphone_address_destroy(parsedAddress);
+    ms_free(c_parsedAddress);
+    
+    LinphoneAuthInfo* info = linphone_auth_info_new([username UTF8String]
+                                                    , NULL, [password UTF8String]
+                                                    , NULL
+                                                    , NULL
+                                                    ,linphone_proxy_config_get_domain(proxyCfg));
+    
+    [self setDefaultSettings:proxyCfg];
+    
+    [self clearProxyConfig];
+    
+    linphone_proxy_config_enable_register(proxyCfg, true);
+    linphone_core_add_auth_info(lc, info);
+    linphone_core_add_proxy_config(lc, proxyCfg);
+    linphone_core_set_default_proxy_config(lc, proxyCfg);
+    return TRUE;
+}
+
+- (void)setDefaultSettings:(LinphoneProxyConfig*)proxyCfg {
+    LinphoneManager* lm = [LinphoneManager instance];
+    [lm configurePushTokenForProxyConfig:proxyCfg];
+}
+
+- (void)clearProxyConfig {
+    linphone_core_clear_proxy_config([LinphoneManager getLc]);
+    linphone_core_clear_all_auth_info([LinphoneManager getLc]);
+}
+
+
+- (IBAction)tapsettButton:(UIButton *)sender {
+    [self tapSetButton];
+}
+
+-(void) tapSetButton
+{
+//    [self noAnimationToMain];
+//    self.homeViewController.hidesBottomBarWhenPushed = YES;
+//    kqSettingViewController *svc = [[kqSettingViewController alloc] initWithNibName:@"kqSettingViewController" bundle:nil];
+//    [self.homeViewController.navigationController pushViewController:svc animated:NO];
+}
+
+-(void) noAnimationToMain
+{
+    UIScreen *ms = [UIScreen mainScreen];
+    CGFloat disx,disy,pption;
+    if (self.view.center.x < self.bottomTabBarController.view.center.x) {
+        disx = 0;
+        disy = 0;
+        pption = 1;
+        self.homeViewController.tap.enabled = NO;
+    }else{
+        disx = ms.bounds.size.width * 0.64;
+        disy = 0- (1 - 0.77)  / 2 * ms.bounds.size.height + 20;
+        pption = 0.77;
+        self.homeViewController.tap.enabled = YES;
+    }
+    self.bottomTabBarController.view.center = CGPointMake(self.view.center.x + disx, self.view.center.y +disy);
+    self.bottomTabBarController.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, pption, pption);
+}
+
+-(void) didTapLeftButton
+{
+    UIScreen *ms = [UIScreen mainScreen];
+    CGFloat disx,disy,pption;
+    if (self.view.center.x < self.bottomTabBarController.view.center.x) {
+        disx = 0;
+        disy = 0;
+        pption = 1;
+        self.homeViewController.tap.enabled = NO;
+    }else{
+        disx = ms.bounds.size.width * 0.64;
+        disy = 0- (1 - 0.77)  / 2 * ms.bounds.size.height + 20;
+        pption = 0.77;
+        self.homeViewController.tap.enabled = YES;
+    }
+    [UIView beginAnimations:@"缩小" context:nil];
+    [UIView setAnimationDuration:0.75f];
+    self.bottomTabBarController.view.center = CGPointMake(self.view.center.x + disx, self.view.center.y +disy);
+    self.bottomTabBarController.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, pption, pption);
+    [UIView commitAnimations];
+    NSLog(@"-----------------1");
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+#pragma TabBarDelegate
+-(BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+//    if (tabBarController.selectedIndex != 2) {
+//        kqPersonalInfomation *pinfo = [kqPersonalInfomation sharedPersonalInfomation];
+//        pinfo.tabBarSelectedIndex = tabBarController.selectedIndex;
+//    }
+//    
+//    NSLog(@"tabsel-------%lu",(unsigned long)tabBarController.selectedIndex);
+    if ([viewController isEqual:self.homeNavigationController]) {
+        [self.homeViewController.tabBarItem setBadgeValue:nil];
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        [ud setValue:[NSNumber numberWithBool:YES] forKey:@"callBadgeFlag"];
+        for (NSDictionary *dic in self.homeViewController.dataArray) {
+            NSString *callFlag = [dic valueForKey:@"islink"];
+            NSMutableArray *dataArr = [ud valueForKey:@"callidArray"];
+            if ([callFlag isEqualToString:@"1"]) {
+                NSNumber *callid = [dic valueForKey:@"callid"];
+                if (dataArr) {
+                    if (![dataArr containsObject:callid]) {
+                        NSMutableArray *dataArray = [NSMutableArray arrayWithArray:dataArr];
+                        [dataArray addObject:callid];
+                        [ud setValue:dataArray forKey:@"callidArray"];
+                    }
+                }else{
+                    NSMutableArray *dataArray = [NSMutableArray array];
+                    [dataArray addObject:callid];
+                    [ud setValue:dataArray forKey:@"callidArray"];
+                }
+            }
+        }
+        [ud synchronize];
+    }
+    return YES;
+}
+
+@end

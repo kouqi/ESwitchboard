@@ -1,0 +1,96 @@
+//
+//  kqHomeSelectDateViewController.m
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/7/27.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import "kqHomeSelectDateViewController.h"
+#import "NSDate+convenience.h"
+#import "kqCallRecoderListViewController.h"
+@interface kqHomeSelectDateViewController ()
+@property(strong, nonatomic) NSString *monthString,*dateString;
+@end
+
+@implementation kqHomeSelectDateViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"按日期查找";
+    VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
+    UIScreen *ms = [UIScreen mainScreen];
+    calendar.frame = CGRectMake(0, 64, calendar.frame.size.width, calendar.frame.size.height);
+    calendar.center = CGPointMake(ms.bounds.size.width / 2, 64 + calendar.frame.size.height / 2);
+    calendar.delegate=self;
+    [self.view addSubview:calendar];
+    [self initTopBar];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM"];
+    self.monthString = [NSString stringWithFormat:@"%@",[formatter stringFromDate:[NSDate date]]];
+    // Do any additional setup after loading the view from its nib.
+}
+
+-(void) initTopBar
+{
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton.frame = CGRectMake(0, 0, 44, 44);
+    [rightButton setBackgroundImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(tapRightButton) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rbbi = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    self.navigationItem.leftBarButtonItem = rbbi;
+}
+
+-(void) tapRightButton
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated andSwitchedToYear:(int)year{
+    if (month < 10) {
+        self.monthString = [NSString stringWithFormat:@"%d-0%d",year,month];
+    }else{
+        self.monthString = [NSString stringWithFormat:@"%d-%d",year,month];
+    }
+}
+
+-(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    self.dateString = [NSString stringWithFormat:@"%@",[formatter stringFromDate:date]];
+    NSLog(@"Selected date = %@",date);
+    self.hidesBottomBarWhenPushed = YES;
+    kqCallRecoderListViewController *crlvc = [[kqCallRecoderListViewController alloc] initWithNibName:@"kqCallRecoderListViewController" bundle:nil];
+    //    crlvc.dataArray
+    crlvc.title = self.dateString;
+    crlvc.dataArray = [NSMutableArray arrayWithArray:[[kqDataBase sharedDataBase] queryAllRecoderWithTime:self.dateString]];
+    [crlvc.tableView reloadData];
+    [self.navigationController pushViewController:crlvc animated:YES];
+}
+
+- (IBAction)tapMonthButton:(id)sender {
+    self.hidesBottomBarWhenPushed = YES;
+    kqCallRecoderListViewController *crlvc = [[kqCallRecoderListViewController alloc] initWithNibName:@"kqCallRecoderListViewController" bundle:nil];
+//    crlvc.dataArray
+    crlvc.title = self.monthString;
+    crlvc.dataArray = [NSMutableArray arrayWithArray:[[kqDataBase sharedDataBase] queryAllRecoderWithTime:self.monthString]];
+    [crlvc.tableView reloadData];
+    [self.navigationController pushViewController:crlvc animated:YES];
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

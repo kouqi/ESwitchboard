@@ -1,0 +1,109 @@
+//
+//  kqDialExtensionViewController.m
+//  eSwitchboardPro
+//
+//  Created by 海峰 on 15/7/27.
+//  Copyright (c) 2015年 海峰. All rights reserved.
+//
+
+#import "kqDialExtensionViewController.h"
+#import "kqDialExtensionTableViewCell.h"
+#import "kqDialChatViewController.h"
+@interface kqDialExtensionViewController ()<kqDownloadManagerDelegate,UITableViewDataSource,UITableViewDelegate>
+@property(strong, nonatomic) UITableView *tableView;
+@end
+
+@implementation kqDialExtensionViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"拨分机";
+    [self initTopBar];
+    
+    UIScreen *ms = [UIScreen mainScreen];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ms.bounds.size.width, ms.bounds.size.height - 64 - 49)];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:self.tableView];
+    
+    
+    // Do any additional setup after loading the view from its nib.
+}
+
+-(void) initTopBar
+{
+    UIButton *bu = [UIButton buttonWithType:UIButtonTypeCustom];
+    bu.frame = CGRectMake(0, 0, 30, 30);
+    [bu setBackgroundImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [bu addTarget:self action:@selector(tapRightButton) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rbbi = [[UIBarButtonItem alloc] initWithCustomView:bu];
+    self.navigationItem.leftBarButtonItem = rbbi;
+}
+
+-(void) tapRightButton
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+//TODO:tableView代理方法
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    kqPersonalInfomation *pinfo = [kqPersonalInfomation sharedPersonalInfomation];
+    return pinfo.extenseionArray.count;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 65.0f;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    kqDialExtensionTableViewCell *cell = (kqDialExtensionTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:@"kqDialExtensionTableViewCell" owner:self options:nil] objectAtIndex:0];
+    kqPersonalInfomation *pinfo = [kqPersonalInfomation sharedPersonalInfomation];
+    NSDictionary *dic = [pinfo.extenseionArray objectAtIndex:indexPath.row];
+    cell.extLabel.text = [NSString stringWithFormat:@"8888%@",[dic valueForKey:@"extensionNumber"]];
+    cell.phoneLabel.text = [NSString stringWithFormat:@"%@",[dic valueForKey:@"phoneNumber"]];
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    kqPersonalInfomation *pinfo = [kqPersonalInfomation sharedPersonalInfomation];
+    NSDictionary *dic = [pinfo.extenseionArray objectAtIndex:indexPath.row];
+//    if ([[dic valueForKey:@"phoneNumber"] isEqualToString:pinfo.phoneNumber]) {
+////        [kqAllTools showAlertViewWithTitle:@"提示" andMessage:@"不能拨自己的sip电话"];
+//        [kqAllTools showTipTextOnWindow:@"不能拨自己的sip电话！"];
+//    }else{
+//        kqDialChatViewController *dcvc = [[kqDialChatViewController alloc] initWithNibName:@"kqDialChatViewController" bundle:nil];
+//        dcvc.phoneNUmber = [NSString stringWithFormat:@"888888%@",[dic valueForKey:@"extensionNumber"]];
+//        dcvc.displayNumber = [NSString stringWithFormat:@"8888%@",[dic valueForKey:@"extensionNumber"]];
+//        [self presentViewController:dcvc animated:YES completion:^{
+//        }];
+//    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

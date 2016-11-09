@@ -1,0 +1,9 @@
+digraph "mediastreamer2" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_4e535993d7e33f8f8dc7bdd155cc6615 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="include" fontname="Helvetica", fontsize="10", URL="dir_4e535993d7e33f8f8dc7bdd155cc6615.html"]
+  dir_716f5db553e4f63830d822a5367dd39e [shape=box, label="mediastreamer2", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_716f5db553e4f63830d822a5367dd39e.html"];
+  }
+}
